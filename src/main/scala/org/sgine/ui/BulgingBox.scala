@@ -9,6 +9,8 @@ import org.sgine.property.{ModifiableProperty, AdvancedProperty}
 //import simplex3d.math.doublem.DoubleMath._
 
 // NOTE: Has to be in the org.sgine.ui package, because the render method is declared as protected[ui] TODO: Change this in sgine
+
+// TODO: Add shading?
 class BulgingBox() extends Component {
 
   def this(width: Double,
@@ -23,6 +25,8 @@ class BulgingBox() extends Component {
     this.width := width
     this.height := height
     this.depth := depth
+    this.bulging := bulging
+    this.subdivisions := subdivisions
     this.color := edgeColor
     this.centerColor := centerColor
     this.texture := texture
@@ -39,7 +43,7 @@ class BulgingBox() extends Component {
   val depth = new AdvancedProperty[Double](100, this)
 
   /** Amount the box bulges out (positive) or in (negative).  0 = no bulging. */
-  val bulging = new AdvancedProperty[Double](1, this)
+  val bulging = new AdvancedProperty[Double](0.2, this)
 
   val subdivisions = new AdvancedProperty[Int](8, this)
 
@@ -54,12 +58,18 @@ class BulgingBox() extends Component {
 
     glBegin(GL_TRIANGLES)
 
-    renderSide(Vec3d(-1, -1, -1),  Vec3d.UnitX, Vec3d.UnitZ, Vec3d( 0, -1,  0), height())
-    renderSide(Vec3d( 1, -1,  1), -Vec3d.UnitZ, Vec3d.UnitY, Vec3d( 1,  0,  0), width())
-    renderSide(Vec3d( 1,  1, -1), -Vec3d.UnitX, Vec3d.UnitZ, Vec3d( 0,  1,  0), height())
-    renderSide(Vec3d(-1,  1, -1), -Vec3d.UnitY, Vec3d.UnitZ, Vec3d(-1,  0,  0), width())
-    renderSide(Vec3d( 1, -1, -1), -Vec3d.UnitX, Vec3d.UnitY, Vec3d( 0,  0, -1), depth())
-    renderSide(Vec3d(-1, -1,  1),  Vec3d.UnitX, Vec3d.UnitY, Vec3d( 0,  0,  1), depth())
+    val d = depth()
+    val h = height()
+    val w = width()
+
+    def mix(a: Double, b: Double) = (a + b) / 2
+    
+    renderSide(Vec3d(-1, -1, -1),  Vec3d.UnitX, Vec3d.UnitZ, Vec3d( 0, -1,  0), mix(w,d))
+    renderSide(Vec3d( 1, -1,  1), -Vec3d.UnitZ, Vec3d.UnitY, Vec3d( 1,  0,  0), mix(h,d))
+    renderSide(Vec3d( 1,  1, -1), -Vec3d.UnitX, Vec3d.UnitZ, Vec3d( 0,  1,  0), mix(w,d))
+    renderSide(Vec3d(-1,  1, -1), -Vec3d.UnitY, Vec3d.UnitZ, Vec3d(-1,  0,  0), mix(h,d))
+    renderSide(Vec3d( 1, -1, -1), -Vec3d.UnitX, Vec3d.UnitY, Vec3d( 0,  0, -1), mix(w,h))
+    renderSide(Vec3d(-1, -1,  1),  Vec3d.UnitX, Vec3d.UnitY, Vec3d( 0,  0,  1), mix(w,h))
 
     glEnd()
   }

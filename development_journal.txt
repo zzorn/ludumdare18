@@ -4,34 +4,34 @@ Times in GMT +3 (Finnish summer time)
 
 Saturday
 
-* 10 am
+== 10 am
 
 Woke up and read the theme (enemies as weapons).  Not my favourite, as it's a game mechanic, as opposed to a setting.  Let's see what I can do with it.  Maybe I'll just prototype some of the things I've been planning to get done, and add the game on with hot-glue.
 
 
-* 10:55
+== 10:55
 
 Setting up the project in IntelliJ and copy pasting a maven build file.  This always seem to be more work than it should be..
 
 Ideally I'd like to create a webstart package, but getting that to work may take a weekend all by itself..  Will take a look at that at the end.
 
 
-* 10:57
+== 10:57
 
 Print "hello" works from the IDE.
 
 
-* 11:12
+== 11:12
 
 Writing maven pom, trying to hunt down the dependencies in their right version and their repositories...
 
 
-* 11:34
+== 11:34
 
 Maven compiles and runs.
 
 
-* 12:01
+== 12:01
 
 Wrote simple box demo:
   object Screen extends StandardDisplay { def setup() { scene +=  new Box() } }
@@ -40,12 +40,12 @@ but lwjgl throws a null pointer exception.  What's up?  Can't check the sources 
 Pondering switching to Ardor3D instead, only so many hours left.
 
 
-* 12:49
+== 12:49
 
 Got a rotating box using Ardor3D
 
 
-* 13:30
+== 13:30
 
 Ardor3D doesn't seem to have any sane base class to extend for your own projects, other than the ExampleBase which provides stuff like WASD camera movement and normal debugging, which you don't want in the final game.
 
@@ -54,12 +54,12 @@ So a new developer has to look through the 500 line sources for ExampleBase and 
 Doing just that now (analyzing ExampleBase and converting relevant parts to scala, not throwing nullpointers).
 
 
-* 14:47
+== 14:47
 
 Ardor3D is a mess to work with, taking another look at the bug in sgine.  This is not starting well.
 
 
-* 15:45
+== 15:45
 
 Tracked down the problem in sgine, it happens to Box but not to Cuboid, so I can get around it by using Cuboid.  So back to sgine then..
 
@@ -74,11 +74,11 @@ Not sure if I'm going for full terrain engine or just a brute force blocky engin
 Maybe add in some interesting enemy behaviour too, or merging / mutating enemies, etc.. (mix colors and shapes and behavior, or pick one randomly, or mutate genes...)
 
 
-* 18:01
+== 18:01
 
 Been working on the bulby rectangle component for the enemies.  Now I have something on the screen, needs a bit of fixing as the vertexes are still a bit over the place.
 
-19:41
+== 19:41
 
 Fixed the vertexes and added bulging to the rectangle.  As I suspected, it looks pretty good with a simple high-frequency noise texture.  Next I'll add another color parameter to be used for the centers of the sides.
 
@@ -89,7 +89,90 @@ I also committed everything to github, feels a bit safer to know it's backed up.
 Now lunch ->
 
 
+== 21:10
 
+Dual colored objects now done, did some (way too much) fine tuning.
+
+Time to start thinking about rendering a map with entities and getting some actual gameplay done soon.
+
+I was thinking of using json format for the game data, and loading it on the game start, as well as from a debug button.  That would allow much faster fine tuning of the game, as compile & startup takes about half a minute or so (very slow for doing fast adjustment of parameters up or down).
+
+
+== 22:15
+
+Animation of the boxy thing was easy with sgine:s PropertyChangeEffects.
+It would probably make sense to parse the animations from config files, as tweaking them takes time.
+
+Now starting to look at the terrain.  But first, a scope sanity check & todo list:
+
+Terrain 
+ * Terrain rendering
+   * Terrain consists of spheres, that occasionally come off and float into the sky?? = particle terrain
+   * Terrain is/can be bent up or downwards towards the horizon
+ * Terrain generation / levels (based on json file)
+
+Config
+ * Reading json config file
+
+Levels
+ * Levels (basically a series of waypoints, with optional message text to the player)
+ * At a final waypoint the level can change, loading a different map, or the end game screen
+
+Models
+ * Googly Eyes for boxys.  Also used as a guide to the next waypoint (reuse, reuse :)
+ * Waypoints.  Maybe spheres?
+ * Skybox
+ * Some stuff to fill up the sky?  Clouds?  Terrain spheres?
+
+Physics
+ * Movement of entities over terrain, and velocity & gravity fall if in air.
+ * Collision detection between entities (bounding box or bounding sphere if there are no bbox overlap checks in sgine)
+
+User Input & camera
+ * Movement controlusing wasd, keyboard look with arrow keys
+ * Mouse look
+ * ESC to quit (later to menu / splash screen, if time)
+ * Jump with middle mouse / alt
+ * Fire button / space to fire current ammo
+ * Scroll wheel / Q & E to switch ammo type
+ * Right mouse / Enter to pick up new ammo type to current ammo slot
+
+HUD elements:
+ * Googly eyes to show next waypoint
+ * In the right lower corner: amount of ammo of the different types in a wheel formation, with current ammo somewhat enlarged and towards center of screen
+   * There is an ammo cap
+   * Knocked down boxyes expire after some time unless picked up  
+ * A health bar / circle at the left lower corner of the screen, made from red boxys (healthpacks)
+ 
+Weapon / boxy types
+ * Come up with boxy types and their weapon effect, attacks and behavior.  Some ideas:
+   * Knife / yourself - a multi-use hand-combat range weapon that can't be dropped
+   * Rifle
+   * Machinegun
+   * Grenade
+   * Heat seeking missile
+   * Shotgun / multishot gun
+   * Black hole / gravitation gun (pull entities in)
+   * Mirv - explodes on impact into another type of enemy
+   * Mine
+   * flies far and becomes HUAGE, killing stuff it touches
+   * Fetch - knocks down the enemy it hits and brings it back to you
+ * The attack of a boxy could be the same (or similar?) as its weapon effect
+ * The behaviours (one or more could be mixed, maybe support state machines too (transitions from player distance changes and hitpoint changes and number of friends nearby)):
+   * Flocking with same type
+   * Enemy seaking
+   * Attacks friends?
+   * Wanders
+   * Flees from you
+   * Circles you
+   * Keeps a fixed distance to player
+   * Tries to sneak up from behind you
+ * Hitpoints - boxys have some health too, need to remove it before they are knocked down?  
+
+Game status
+ * Game over effect & screen when hitpoints depleated, and restart from start of level (or latest waypoint)
+ * Level completed screen
+ * Game completed screen (& animation)
 
 
 
