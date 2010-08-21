@@ -1,0 +1,90 @@
+Development journal for my Ludum Dare 18 entry.
+
+Times in GMT +3 (Finnish summer time)
+
+Saturday
+
+* 10 am
+
+Woke up and read the theme (enemies as weapons).  Not my favourite, as it's a game mechanic, as opposed to a setting.  Let's see what I can do with it.  Maybe I'll just prototype some of the things I've been planning to get done, and add the game on with hot-glue.
+
+
+* 10:55
+
+Setting up the project in IntelliJ and copy pasting a maven build file.  This always seem to be more work than it should be..
+
+Ideally I'd like to create a webstart package, but getting that to work may take a weekend all by itself..  Will take a look at that at the end.
+
+
+* 10:57
+
+Print "hello" works from the IDE.
+
+
+* 11:12
+
+Writing maven pom, trying to hunt down the dependencies in their right version and their repositories...
+
+
+* 11:34
+
+Maven compiles and runs.
+
+
+* 12:01
+
+Wrote simple box demo:
+  object Screen extends StandardDisplay { def setup() { scene +=  new Box() } }
+but lwjgl throws a null pointer exception.  What's up?  Can't check the sources as I don't know the lwjgl version sgine uses (and it has compressed the file so can't go by file size).
+
+Pondering switching to Ardor3D instead, only so many hours left.
+
+
+* 12:49
+
+Got a rotating box using Ardor3D
+
+
+* 13:30
+
+Ardor3D doesn't seem to have any sane base class to extend for your own projects, other than the ExampleBase which provides stuff like WASD camera movement and normal debugging, which you don't want in the final game.
+
+So a new developer has to look through the 500 line sources for ExampleBase and copy all the necessary initialization steps from there..  Quite a pain compared to the works-out-of-the-box-(when-not-throwing-nullpointers) approach of Sgine.
+
+Doing just that now (analyzing ExampleBase and converting relevant parts to scala, not throwing nullpointers).
+
+
+* 14:47
+
+Ardor3D is a mess to work with, taking another look at the bug in sgine.  This is not starting well.
+
+
+* 15:45
+
+Tracked down the problem in sgine, it happens to Box but not to Cuboid, so I can get around it by using Cuboid.  So back to sgine then..
+
+Got a fairly good idea about the game though: It will have primitive shaped enemies (tall blue rectangles, fat red cylinders, black spheres, etc) with googly eyes.  The player can knowck down and pick up the enemies and shoot them (used as ammo).  Different enemy types obviously have different kind of effect.  The player can have only a few different types of ammo at once, but the more ammo the player has the stronger the effect.  The enemy types also vary with the level position.  So there is a choice - should the player pick up a new enemy type and loose the strong bonus from a previous stack of some type of enemy/ammo, or not.  Number of ammo slots might increase a bit with levels.
+
+Explosions from ammo would be a splash of the color of the ammo.
+
+The environment could be on the cutesque side.. maybe all / most objects could actually be ammoable enemies, some are just static and harmless (e.g. trees, stones).
+
+Not sure if I'm going for full terrain engine or just a brute force blocky engine.
+
+Maybe add in some interesting enemy behaviour too, or merging / mutating enemies, etc.. (mix colors and shapes and behavior, or pick one randomly, or mutate genes...)
+
+
+* 18:01
+
+Been working on the bulby rectangle component for the enemies.  Now I have something on the screen, needs a bit of fixing as the vertexes are still a bit over the place.
+
+
+
+
+
+
+
+
+
+
+
