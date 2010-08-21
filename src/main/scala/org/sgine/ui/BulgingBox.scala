@@ -1,13 +1,12 @@
 package org.sgine.ui
 
 import org.sgine.core.Color
-import org.sgine.property.AdvancedProperty
 import org.sgine.render.RenderImage
-import org.sgine.ui.Component
 import scala.math._
 import simplex3d.math.doublem.Vec3d
 import org.lwjgl.opengl.GL11._
-
+import org.sgine.property.{ModifiableProperty, AdvancedProperty}
+//import simplex3d.math.doublem.DoubleMath._
 
 // NOTE: Has to be in the org.sgine.ui package, because the render method is declared as protected[ui] TODO: Change this in sgine
 class BulgingBox() extends Component {
@@ -17,13 +16,15 @@ class BulgingBox() extends Component {
            depth: Double,
            bulging: Double = 0.0,
            subdivisions: Int = 8,
-           color: Color = Color.White,
+           edgeColor: Color = Color.White,
+           centerColor: Color = Color.White,
            texture: RenderImage = null) {
     this()
     this.width := width
     this.height := height
     this.depth := depth
-    this.color := color
+    this.color := edgeColor
+    this.centerColor := centerColor
     this.texture := texture
   }
 
@@ -44,6 +45,8 @@ class BulgingBox() extends Component {
 
   /* Texture image of the box, or null if no texture should be used. */
   val texture = new AdvancedProperty[RenderImage](null, this)
+
+  val centerColor = new AdvancedProperty[Color](Color.White, this) with ModifiableProperty[Color]
 
 
   protected[ui] def drawComponent() {
@@ -70,6 +73,8 @@ class BulgingBox() extends Component {
        a * (1.0 - mu) + b * mu
     }
 
+    def lerp(a: Double, b: Double, t: Double): Double = a * (1.0 - t) + b * t
+
 
     val scaledStart = start * 0.5
     val size = subdivisions()
@@ -82,14 +87,26 @@ class BulgingBox() extends Component {
       pos *= scale
 
       // Calculate bulge
-      val edgeDistance = 1.0 - 2 * max(abs(0.5 - nv), abs(0.5 - nu))
+      val roundDistance = 1.0 - 2 * sqrt((0.5-nu)*(0.5-nu) + (0.5-nv)*(0.5-nv))
+      val squareDistance = 1.0 - 2 * max(abs(0.5 - nv), abs(0.5 - nu))
+      val distance = lerp(squareDistance, roundDistance, squareDistance)
+
       //val bulge = cosineInterpolate(0, 1, edgeDistance)
-      val bulge = sin(Tau / 4 * edgeDistance)
+      val bulge = sin(Tau / 4 * distance)
       pos += normal * (bulging() * bulge * bulgeFactor * 0.25)
 
       glTexCoord2d(nu, nv)
+
+      val edgeColor: Color = if(color() != null) color() else Color.White
+      val cColor: Color = if(centerColor() != null) centerColor() else Color.White
+
+      def clerp(c1: Double, c2: Double): Double = c1 * (1 - distance) + c2 * distance
+      glColor4d(clerp(edgeColor.red, cColor.red),
+                clerp(edgeColor.green, cColor.green),
+                clerp(edgeColor.blue, cColor.blue),
+                clerp(edgeColor.alpha, cColor.alpha))
+
       glVertex3d(pos.x, pos.y, pos.z)
-      if (color() != null) glColor4d(color().red, color().green, color().blue, color().alpha)
     }
 
     var v = 0

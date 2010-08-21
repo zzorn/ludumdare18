@@ -15,13 +15,13 @@ import org.sgine.core.{Resource, Color}
  * 
  */
 class Screen extends StandardDisplay with Updatable {
-  private val animationTimeSeconds = 1.0;
+  private val animationTimeSeconds = 3.0;
   private var countdown = 0.0;
 
   var bulgy: BulgingBox = null
 
   def setup() {
-    bulgy = new BulgingBox(300, 100, 100)
+    bulgy = new BulgingBox(500, 500, 500)
     scene += bulgy
 
     bulgy.texture := RenderImage(TextureManager(Resource("noise1.png")))
@@ -38,6 +38,7 @@ class Screen extends StandardDisplay with Updatable {
     bulgy.rotation.z.animator = new EasingNumericAnimator(easingMethod, adjustTime)
 
     bulgy.color.animator = new EasingColorAnimator(easingMethod, adjustTime)
+    bulgy.centerColor.animator = new EasingColorAnimator(easingMethod, adjustTime)
 
     bulgy.bulging.animator = new EasingNumericAnimator(easingMethod, adjustTime)
 
@@ -73,5 +74,6 @@ class Screen extends StandardDisplay with Updatable {
     bulgy.bulging := random * 2 - 1.0
 
     bulgy.color := Color(random, random, random, 1)
+    bulgy.centerColor := Color(random, random, random, 1)
   }
 }
