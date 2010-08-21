@@ -78,7 +78,15 @@ Maybe add in some interesting enemy behaviour too, or merging / mutating enemies
 
 Been working on the bulby rectangle component for the enemies.  Now I have something on the screen, needs a bit of fixing as the vertexes are still a bit over the place.
 
+19:41
 
+Fixed the vertexes and added bulging to the rectangle.  As I suspected, it looks pretty good with a simple high-frequency noise texture.  Next I'll add another color parameter to be used for the centers of the sides.
+
+I'll use differently shaped and colored rectangles to start with for the enemies, adding other geometric shapes later if I have the time (= probably not).
+
+I also committed everything to github, feels a bit safer to know it's backed up.
+
+Now lunch ->
 
 
 
