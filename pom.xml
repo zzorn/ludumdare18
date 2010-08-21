@@ -1,0 +1,258 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <properties>
+    <projname>ludumdare18</projname>
+    <projver>1.0</projver>
+    <projdesc>zzorn's entry for Ludum Dare 18.</projdesc>
+    <scala.version>2.8.0</scala.version>
+    <scalatest.version>1.2</scalatest.version>
+    <sgine.version>2.8.0-1.0-SNAPSHOT</sgine.version>
+    <lwjgl.version>unknown</lwjgl.version>
+    <ardor3d.version>0.6</ardor3d.version>
+  </properties>
+
+  <groupId>org.${projname}</groupId>
+  <artifactId>${projname}</artifactId>
+  <version>${projver}</version>
+  <name>${projname}</name>
+  <description>${projdesc}</description>
+  <inceptionYear>2010</inceptionYear>
+
+  <repositories>
+    <repository>
+      <id>java.net</id>
+      <name>java.net Maven2 Repository</name>
+      <url>http://download.java.net/maven/2/</url>
+      <layout>default</layout>
+    </repository>
+
+    <repository>
+      <id>ardor3d</id>
+      <name>ardor3d repostiory</name>
+      <url>http://ardor3d.com:8081/nexus/content/groups/public/</url>
+      <layout>default</layout>
+    </repository>
+
+    <repository>
+      <id>scala-tools.org</id>
+      <name>Scala-Tools Maven2 Repository</name>
+      <url>http://scala-tools.org/repo-releases</url>
+    </repository>
+
+    <repository>
+      <id>scala-tools-snapshots.org</id>
+      <name>Scala-Tools Maven2 Snapshots Repository</name>
+      <url>http://www.scala-tools.org/repo-snapshots</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>scala-tools.org</id>
+      <name>Scala-Tools Maven2 Repository</name>
+      <url>http://scala-tools.org/repo-releases</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+
+    <!-- Scala -->
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
+
+    <!-- Testing -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest</artifactId>
+      <version>${scalatest.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+
+    <!-- SGine 3D Engine -->
+    <dependency>
+      <groupId>org.sgine</groupId>
+      <artifactId>sgine</artifactId>
+      <version>${sgine.version}</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/sgine_${sgine.version}.jar</systemPath>
+    </dependency>
+
+    <!-- Ardor3D 3D engine -->
+    <!--
+    <dependency>
+      <groupId>com.ardor3d</groupId>
+      <artifactId>ardor3d</artifactId>
+      <version>${ardor3d.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.ardor3d</groupId>
+      <artifactId>ardor3d-examples</artifactId>
+      <version>${ardor3d.version}</version>
+    </dependency>
+    -->
+
+    <!-- Google collections (needed by ardor3d) -->
+    <!--
+    <dependency>
+      <groupId>com.google.collections</groupId>
+      <artifactId>google-collections</artifactId>
+      <version>1.0</version>
+    </dependency>
+-->
+
+    <!-- OpenGL -->
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl</artifactId>
+      <version>${lwjgl.version}</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/lwjgl.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-util</artifactId>
+      <version>${lwjgl.version}</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/lwjgl_util.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-util-applet</artifactId>
+      <version>${lwjgl.version}</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/lwjgl_util_applet.jar</systemPath>
+    </dependency>
+
+    <!-- High speed mouse, joystick, keyboard input.  -->
+    <dependency>
+      <groupId>net.java.dev.jinput</groupId>
+      <artifactId>jinput</artifactId>
+      <version>0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/jinput.jar</systemPath>
+    </dependency>
+
+    <!-- Some apple stuff.  Used by sgine. -->
+    <dependency>
+      <groupId>AppleJavaExtensions</groupId>
+      <artifactId>AppleJavaExtensions</artifactId>
+      <version>unknown</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/AppleJavaExtensions.jar</systemPath>
+    </dependency>
+
+    <!-- Java Media Framework.  used by sgine. -->
+    <dependency>
+      <groupId>jmc</groupId>
+      <artifactId>jmc</artifactId>
+      <version>unknown</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/jmc.jar</systemPath>
+    </dependency>
+
+    <!-- 3D Math.  Used by sgine -->
+    <dependency>
+      <groupId>simplex3d_core</groupId>
+      <artifactId>simplex3d_core</artifactId>
+      <version>unknown</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/simplex3d-math-core.jar </systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>simplex3d_double</groupId>
+      <artifactId>simplex3d_double</artifactId>
+      <version>unknown</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/simplex3d-math-double.jar</systemPath>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
+    <finalName>${projname}-${version}</finalName>
+
+    <plugins>
+
+      <!-- Compile scala -->
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <scalaVersion>${scala.version}</scalaVersion>
+<!--
+          <args>
+            <arg>-target:jvm-1.5</arg>
+          </args>
+-->
+        </configuration>
+      </plugin>
+
+
+            <!-- Generate source archive -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Scala testing -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.class</include>
+                        <include>**/*Spec.class</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+    </plugins>
+
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <configuration>
+          <scalaVersion>${scala.version}</scalaVersion>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
