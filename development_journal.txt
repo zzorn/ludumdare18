@@ -175,6 +175,36 @@ Game status
  * Game completed screen (& animation)
 
 
+== 00:50
+
+Decided to do the terrain with custom voxels.  The engine can manage maybe 1600 simultaneous animated objects, so aiming for pretty large voxels, maybe in a 21x21 grid around player (and only one or maybe two layers deep).
+
+Didn't code anything anymore, heading off to bed.
+
+
+==== Sunday 22.8.2010 ====
+
+== 9:13
+
+Woke up, back to coding!
+
+I'm thinking of using the lathe shape I added to sgine earlier for the terrain blocks.
+
+
+== 10:53
+
+Did some work on the lathe shape to be used for terrain blocks.
+
+
+== 13:04
+
+Testing (terrain) performance - _not_ good - 400 objects slows the game to 1 fps.  Probably all the Node listening and such logic going on in sgine, as well as not using VBO:s.  
+
+Optimized a bit from calculating the object on the fly every time it is rendered to only recalculating it when parameters changed, but that only increased performance from <= 1 fps to 4 fps.
+
+Need to rethink the terrain, or code my own simple scenegraph on top of lwjgl in a few hours (=not realistic).
+
+
 
 
 

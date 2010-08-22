@@ -1,5 +1,6 @@
 package ludumdare18
 
+import scala.math.random
 import org.sgine.ui.{BulgingBox, CompositeComponent, Component}
 import org.sgine.core.{Resource, Color}
 import org.sgine.render.{TextureManager, RenderImage}
@@ -12,7 +13,7 @@ import org.sgine.effect.{Effect, CompositeEffect, PropertyChangeEffect, PauseEff
  */
 class Boxy() extends CompositeComponent {
 
-  val body = new BulgingBox(100.0, 500.0, 100.0, 0.3, 8, Color(0.1, 0.2, 0.9), Color(0.2,0.4,1.0), RenderImage(TextureManager(Resource("noise1.png"))))
+  val body = new BulgingBox(100.0, 500.0, 150.0, 0.3, 5, Color(0.1, 0.2, 0.9), Color(0.2,0.4,1.0), RenderImage(TextureManager(Resource("blurred_noise1.png"))))
 
   var animations: List[Effect] = Nil
 
@@ -33,10 +34,12 @@ class Boxy() extends CompositeComponent {
   def animateIdle {
     stopAnimations()
 
-    body.bulging.animator = new EasingNumericAnimator(easing.Cubic.easeInOut _, 0.7)
+    body.bulging.animator = new EasingNumericAnimator(easing.Cubic.easeInOut _, 2)
 
     val breathe = new CompositeEffect(
+      new PauseEffect(random * 1),
       new PropertyChangeEffect[Double](body.bulging, -0.1),
+      new PauseEffect(random * 1),
       new PropertyChangeEffect[Double](body.bulging, 0.3))
     breathe.repeat = -1
     addAnimation(breathe)

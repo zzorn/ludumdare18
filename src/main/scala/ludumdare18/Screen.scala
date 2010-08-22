@@ -6,21 +6,22 @@ import org.sgine.work.Updatable
 import org.sgine.property.animate.{EasingColorAnimator, EasingNumericAnimator}
 import scala.math.random
 import scala.math.Pi
-import org.sgine.ui.BulgingBox
 import org.sgine.scene.Node
-import org.sgine.render.{RenderImage, TextureManager, StandardDisplay}
 import org.sgine.core.{Resource, Color}
+import org.sgine.ui.{Terrain, BulgingBox}
+import org.sgine.render.{Debug, RenderImage, TextureManager, StandardDisplay}
 
 /**
  * 
  */
-class Screen extends StandardDisplay with Updatable {
+class Screen extends StandardDisplay with Debug with Updatable {
   private val animationTimeSeconds = 3.0;
   private var countdown = 0.0;
 
   var bulgy: Boxy = null
 
   def setup() {
+    scene += new Terrain()
     bulgy = new Boxy()
     scene += bulgy
 
