@@ -29,7 +29,7 @@ class BulgingBox() extends MeshComponent {
     this.subdivisions := subdivisions
     this.color := edgeColor
     this.centerColor := centerColor
-    this.texture := texture
+    //this.texture := texture
   }
 
 

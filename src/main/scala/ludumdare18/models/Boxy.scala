@@ -16,7 +16,7 @@ class Boxy() extends CompositeComponent {
   def rand(from: Double, to: Double): Double = to + random * (to-from)
   def randColor: Color = Color(random, random, random)
 
-  val body = new BulgingBox(rand(50, 100), rand(10, 400), rand(50, 100), rand(-0.5, 0.7), 5,
+  val body = new BulgingBox(rand(50, 100), rand(10, 400), rand(50, 100), rand(-0.5, 0.7), 1,
     randColor, randColor, RenderImage(TextureManager(Resource("blurred_noise2.png"))))
 
   var animations: List[Effect] = Nil

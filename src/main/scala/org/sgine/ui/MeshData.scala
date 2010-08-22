@@ -7,17 +7,20 @@ import org.lwjgl.opengl.GL11._
 
 import simplex3d.math.doublem._
 import org.sgine.render.RenderImage
+import org.lwjgl.BufferUtils
+import java.nio.IntBuffer
+import org.lwjgl.opengl.{ARBVertexBufferObject, GLContext}
 
 /**
  * Contains mutable data for a model, including vertexes, normals, texture coordinates, and indexes.
  */
 class MeshData {
 
-  private val vertexes = new ArrayList[Vec3d]()
-  private val normals = new ArrayList[Vec3d]()
-  private val textureCoordinates = new ArrayList[Vec2d]()
-  private val colors = new ArrayList[Color]()
-  private val indexes = new ArrayList[Int]()
+  val vertexes = new ArrayList[Vec3d]()
+  val normals = new ArrayList[Vec3d]()
+  val textureCoordinates = new ArrayList[Vec2d]()
+  val colors = new ArrayList[Color]()
+  val indexes = new ArrayList[Int]()
 
   private var nextFreeIndex = 0
 
@@ -31,9 +34,58 @@ class MeshData {
   }
 
   def render(texture: RenderImage = null) {
-    if (texture != null) texture.texture.bind()
 
-    // TODO: This would probably be faster as a buffer, at least for larger meshes
+/*
+    if(GLContext.getCapabilities().GL_ARB_vertex_buffer_object) renderWithVbo(texture)
+    else renderWithDirectMode(texture)
+     */
+
+    renderWithDirectMode(texture)
+
+  }
+/*
+  def renderWithVbo(texture: RenderImage) {
+    def createVboId: Int = {
+      val buffer: IntBuffer = BufferUtils.createIntBuffer(1)
+      ARBVertexBufferObject.glGenBuffersARB(buffer);
+      buffer.get(0);
+    }
+
+    val id: Int = createVboId
+
+    // Use an interleaved Vertex Buffer Object
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+    ARBVertexBufferObject.glBindBufferARB(ARBVertexBufferObject.GL_ARRAY_BUFFER_ARB, id);
+
+    val stride = (3 + 3 + 4 + 2) * 4 // 3 for vertex, 3 for normal, 4 for colour and 2 for texture coordinates. * 4 for bytes
+
+    // vertices
+    var offset = 0 * 4; // 0 as its the first in the chunk, i.e. no offset. * 4 to convert to bytes.
+    glVertexPointer(3, GL_FLOAT, stride, offset);
+
+    // normals
+    offset = 3 * 4; // 3 components is the initial offset from 0, then convert to bytes
+    glNormalPointer(GL_FLOAT, stride, offset);
+
+    // colours
+    offset = (3 + 3) * 4; // (6*4) is the number of byte to skip to get to the colour chunk
+    glColorPointer(4, GL_FLOAT, stride, offset);
+
+    // texture coordinates
+    offset = (3 + 3 + 2) * 4;
+    glTexCoordPointer(2, GL_FLOAT, stride, offset);
+
+    
+  }
+
+*/
+  def renderWithDirectMode(texture: RenderImage) {
+    if (texture != null) texture.texture.bind()
 
     glBegin(GL_TRIANGLES)
 
@@ -53,8 +105,9 @@ class MeshData {
 
       i += 1
     }
-    
+
     glEnd()
+    
   }
 
   def getVertex(index: Int): Vec3d = vertexes.get(index)
