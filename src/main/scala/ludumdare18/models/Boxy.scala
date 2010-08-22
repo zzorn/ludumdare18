@@ -13,7 +13,11 @@ import org.sgine.effect.{Effect, CompositeEffect, PropertyChangeEffect, PauseEff
  */
 class Boxy() extends CompositeComponent {
 
-  val body = new BulgingBox(100.0, 500.0, 150.0, 0.3, 5, Color(0.1, 0.2, 0.9), Color(0.2,0.4,1.0), RenderImage(TextureManager(Resource("blurred_noise1.png"))))
+  def rand(from: Double, to: Double): Double = to + random * (to-from)
+  def randColor: Color = Color(random, random, random)
+
+  val body = new BulgingBox(rand(50, 100), rand(10, 400), rand(50, 100), rand(-0.5, 0.7), 5,
+    randColor, randColor, RenderImage(TextureManager(Resource("blurred_noise2.png"))))
 
   var animations: List[Effect] = Nil
 

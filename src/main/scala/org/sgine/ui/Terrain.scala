@@ -13,7 +13,7 @@ class Terrain extends CompositeComponent with InvalidatingComponent {
 
   private val grid = new ArrayList[Component]()
 
-  val terrainSize = intProp(11)
+  val terrainSize = intProp(10)
 
   def createBlock(): Component = {
     new Boxy()
@@ -26,7 +26,7 @@ class Terrain extends CompositeComponent with InvalidatingComponent {
 
     val size = terrainSize()
     println("Initializing terrain of size " + size)
-    val gridSize = 100.0
+    val gridSize = 200.0
     var y = 0
     while (y < size) {
       var x = 0
@@ -34,7 +34,7 @@ class Terrain extends CompositeComponent with InvalidatingComponent {
         val block = createBlock()
         block.location.x := (x-size/2) * gridSize
         block.location.y := 0
-        block.location.z := (y-size/2) * gridSize
+        block.location.z := -1000 + y /*(y-size/2)*/ * gridSize
 
         this += block
         grid += block
